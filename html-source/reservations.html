@@ -10,28 +10,7 @@
     <link rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.2.0/dist/css/datepicker-bs5.min.css">
     <link rel="stylesheet" type="text/css" href="https://unpkg.com/notie/dist/notie.min.css">
-    <style>
-        .my-footer {
-            height: 5em;
-            background-color: #163b65;
-            margin-top: 1.5em;
-            padding: 1em;
-            color: white;
-            font-size: 80%;
-        }
-
-        .room-image {
-            width: 50%;
-        }
-
-        .notie-container {
-            box-shadow: none;
-        }
-
-        .redText {
-            color: red
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="css/styles.css">
 </head>
 
 <body>
@@ -79,26 +58,6 @@
             <div class="col-md-6">
                 <h1 class="mt-5">Search for Availability</h1>
                 <form action="" method="get" novalidate class="needs-validation">
-                    <!-- <div class="row">
-                        <div class="col">
-                            <div class="mb-3">
-                                <label for="start_date" class="form-label">Starting Date</label>
-                                <input required type="date" class="form-control" id="start_date" name="start_date"
-                                    aria-describedby="startDateHelp">
-                                <div id="emailHelp" class="form-text">Enter your starting date in the form of
-                                    YYYY-MM-DD.</div>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="mb-3">
-                                <label for="end_date" class="form-label">Ending Date</label>
-                                <input required type="date" class="form-control" id="end_date" name="end_date"
-                                    aria-describedby="endDateHelp">
-                                <div id="emailHelp" class="form-text">Enter your end date in the form of
-                                    YYYY-MM-DD.</div>
-                            </div>
-                        </div>
-                    </div> -->
                     <div class="row">
                         <div class="col">
                             <div class="row" id="reservation-dates">
@@ -277,6 +236,19 @@
                     backdrop: false,
                     focusConfirm: false,
                     showCancelButton: true,
+                    willOpen: () => {
+                        const elem = document.getElementById('reservation-dates-modal');
+                        const rp = new DateRangePicker(elem, {
+                            format: "dd-mm-yyyy",
+                            showOnFocus: true,
+                            orientation: "top"
+                        })
+
+                    },
+                    didOpen: () => {
+                        document.getElementById('start').removeAttribute('disabled')
+                        document.getElementById('end').removeAttribute('disabled')
+                    },
                     preConfirm: () => {
                         return [
                             document.getElementById('start').value,
