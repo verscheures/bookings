@@ -24,3 +24,5 @@ go.work
 .env
 config.yml
 .idea
+
+bookings
