@@ -26,3 +26,6 @@ config.yml
 .idea
 
 bookings
+
+database.yml
+coverage.out

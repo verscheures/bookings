@@ -6,10 +6,13 @@ import (
 	"net/http"
 
 	"github.com/verscheures/bookings/internal/config"
+	"github.com/verscheures/bookings/internal/driver"
 	"github.com/verscheures/bookings/internal/forms"
 	"github.com/verscheures/bookings/internal/helpers"
 	"github.com/verscheures/bookings/internal/models"
 	"github.com/verscheures/bookings/internal/render"
+	"github.com/verscheures/bookings/internal/repository"
+	"github.com/verscheures/bookings/internal/repository/dbrepo"
 )
 
 // Repo the repository used by the handlers
@@ -18,12 +21,14 @@ var Repo *Repository
 // Repository repository type
 type Repository struct {
 	App *config.AppConfig
+	DB repository.DatabaseRepo
 }
 
 // NewRepo creates new repository
-func NewRepo(a *config.AppConfig) *Repository {
+func NewRepo(a *config.AppConfig, db *driver.DB) *Repository {
 	return &Repository{
 		App: a,
+		DB: dbrepo.NewPostgreRepo(db.SQL, a),
 	}
 }
 
@@ -34,6 +39,7 @@ func NewHandlers(r *Repository) {
 
 // Home is the homepage handler
 func (m *Repository) Home(w http.ResponseWriter, r *http.Request) {
+	
 	render.RenderTemplate(w, r,"home.page.tmpl", &models.TemplateData{})
 
 }
