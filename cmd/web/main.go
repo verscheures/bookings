@@ -42,19 +42,20 @@ func main() {
 	log.Fatal(err)
 }
 
-
-func run()(*driver.DB, error) {
+func run() (*driver.DB, error) {
 	app.InProduction = false
 
 	infoLog = log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
 	app.InfoLog = infoLog
 
-	errorLog =  log.New(os.Stdout,"ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
+	errorLog = log.New(os.Stdout, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
 	app.ErrorLog = errorLog
 
 	// What will we store in session
 	gob.Register(models.Reservation{})
-
+	gob.Register(models.User{})
+	gob.Register(models.Room{})
+	gob.Register(models.Restriction{})
 
 	session = scs.New()
 	session.Lifetime = 24 * time.Hour
@@ -73,7 +74,7 @@ func run()(*driver.DB, error) {
 
 	tc, err := render.CreateTemplateCache()
 	if err != nil {
-		return nil,err
+		return nil, err
 	}
 	app.TemplateCache = tc
 	app.UseCache = false
@@ -82,8 +83,7 @@ func run()(*driver.DB, error) {
 	repo := handlers.NewRepo(&app, db)
 	handlers.NewHandlers(repo)
 
-	render.NewTemplates(&app)
+	render.NewRenderer(&app)
 
-
-	return db,nil
+	return db, nil
 }

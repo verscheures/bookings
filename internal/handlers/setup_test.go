@@ -26,7 +26,6 @@ var session *scs.SessionManager
 var pathToTemplates = "./../../templates"
 var functions = template.FuncMap{}
 
-
 // NoSurf adds CSRF protection to all POST requests
 func NoSurf(next http.Handler) http.Handler {
 	csrfHandler := nosurf.New(next)
@@ -40,7 +39,7 @@ func NoSurf(next http.Handler) http.Handler {
 }
 
 // SessionLoad load an saves the session on everry request
-func SessionLoad(next http.Handler) http.Handler{
+func SessionLoad(next http.Handler) http.Handler {
 	return session.LoadAndSave(next)
 }
 
@@ -77,8 +76,7 @@ func CreateTestTemplateCache() (map[string]*template.Template, error) {
 
 }
 
-
-func  getRoutes()http.Handler{
+func getRoutes() http.Handler {
 	app.InProduction = false
 	// What will we store in session
 	gob.Register(models.Reservation{})
@@ -86,7 +84,7 @@ func  getRoutes()http.Handler{
 	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
 	app.InfoLog = infoLog
 
-	errorLog :=  log.New(os.Stdout,"ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
+	errorLog := log.New(os.Stdout, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
 	app.ErrorLog = errorLog
 
 	session = scs.New()
@@ -106,7 +104,7 @@ func  getRoutes()http.Handler{
 	repo := NewRepo(&app)
 	NewHandlers(repo)
 
-	render.NewTemplates(&app)
+	render.NewRenderer(&app)
 	mux := chi.NewRouter()
 	mux.Use(middleware.Recoverer)
 
@@ -125,7 +123,6 @@ func  getRoutes()http.Handler{
 	mux.Get("/make-reservation", Repo.Reservation)
 	mux.Post("/make-reservation", Repo.PostReservation)
 	mux.Get("/reservation_summary", Repo.ReservationSummary)
-
 
 	fileServer := http.FileServer(http.Dir("./static/"))
 	mux.Handle("/static/*", http.StripPrefix("/static", fileServer))

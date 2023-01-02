@@ -7,8 +7,7 @@ import (
 	"github.com/verscheures/bookings/internal/models"
 )
 
-
-func TestAddDefaultData(t *testing.T){
+func TestAddDefaultData(t *testing.T) {
 	var td models.TemplateData
 
 	r, err := getSession()
@@ -22,7 +21,7 @@ func TestAddDefaultData(t *testing.T){
 	}
 }
 
-func TestRenderTemplate(t *testing.T){
+func TestRenderTemplate(t *testing.T) {
 	pathToTemplates = "./../../templates"
 	tc, err := CreateTemplateCache()
 	if err != nil {
@@ -37,23 +36,23 @@ func TestRenderTemplate(t *testing.T){
 
 	var ww myWriter
 
-	err = RenderTemplate(&ww, r, "home.page.tmpl", &models.TemplateData{})
+	err = Template(&ww, r, "home.page.tmpl", &models.TemplateData{})
 	if err != nil {
 		t.Error("error writing template to browser")
 	}
 
-	err = RenderTemplate(&ww, r, "non-existant.page.tmpl", &models.TemplateData{})
+	err = Template(&ww, r, "non-existant.page.tmpl", &models.TemplateData{})
 	if err == nil {
 		t.Error("Rendered non-existing template")
 	}
 
 }
 
-func TestNewTemplates(t *testing.T){
-	NewTemplates(app)
+func TestNewTemplates(t *testing.T) {
+	NewRenderer(app)
 }
 
-func TestCreateTemplateCache(t *testing.T){
+func TestCreateTemplateCache(t *testing.T) {
 	pathToTemplates = "./../../templates"
 	_, err := CreateTemplateCache()
 	if err != nil {
@@ -61,8 +60,7 @@ func TestCreateTemplateCache(t *testing.T){
 	}
 }
 
-
-func getSession()(*http.Request, error){
+func getSession() (*http.Request, error) {
 	r, err := http.NewRequest("GET", "/some-url", nil)
 	if err != nil {
 		return nil, err

@@ -6,13 +6,13 @@ import (
 	"testing"
 )
 
-func TestMain(m *testing.M){
+func TestMain(m *testing.M) {
 
 	os.Exit(m.Run())
 }
 
 type myHandler struct{}
 
-func(mh *myHandler) ServeHTTP(w http.ResponseWriter, r *http.Request){
-	
+func (mh *myHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+
 }
