@@ -12,7 +12,7 @@ type postgressDBRepo struct {
 	DB  *sql.DB
 }
 
-type testDBRepo  struct{
+type testDBRepo struct {
 	app *config.AppConfig
 	DB  *sql.DB
 }
@@ -27,6 +27,5 @@ func NewPostgreRepo(conn *sql.DB, a *config.AppConfig) repository.DatabaseRepo {
 func NewTestinggreRepo(a *config.AppConfig) repository.DatabaseRepo {
 	return &testDBRepo{
 		app: a,
-
 	}
 }

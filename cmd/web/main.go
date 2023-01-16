@@ -32,6 +32,11 @@ func main() {
 	}
 	defer db.SQL.Close()
 
+	defer close(app.MailChan)
+
+	log.Println("starting mail listener")
+	listenForMail()
+
 	log.Printf("Starting application on port %s", portNumber)
 
 	srv := &http.Server{
@@ -56,6 +61,12 @@ func run() (*driver.DB, error) {
 	gob.Register(models.User{})
 	gob.Register(models.Room{})
 	gob.Register(models.Restriction{})
+
+	mailChan := make(chan models.MailData)
+	app.MailChan = mailChan
+
+	// set to true when running in prod
+	app.InProduction = false
 
 	session = scs.New()
 	session.Lifetime = 24 * time.Hour
