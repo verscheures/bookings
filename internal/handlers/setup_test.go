@@ -7,6 +7,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"testing"
 	"time"
 
 	"net/http"
@@ -76,7 +77,7 @@ func CreateTestTemplateCache() (map[string]*template.Template, error) {
 
 }
 
-func getRoutes() http.Handler {
+func TestMain(m *testing.M) {
 	app.InProduction = false
 	// What will we store in session
 	gob.Register(models.Reservation{})
@@ -101,10 +102,16 @@ func getRoutes() http.Handler {
 	app.TemplateCache = tc
 	app.UseCache = true
 	// repository setup
-	repo := NewRepo(&app)
+	repo := NewTestRepo(&app)
 	NewHandlers(repo)
 
 	render.NewRenderer(&app)
+
+	os.Exit(m.Run())
+}
+
+func getRoutes() http.Handler {
+
 	mux := chi.NewRouter()
 	mux.Use(middleware.Recoverer)
 

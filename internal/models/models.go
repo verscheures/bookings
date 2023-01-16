@@ -16,7 +16,7 @@ type User struct {
 
 // Room is the model for a room
 type Room struct {
-	Id        int
+	ID        int
 	RoomName  string
 	CreatedAt time.Time
 	UpdatedAt time.Time
@@ -32,14 +32,14 @@ type Restriction struct {
 
 // Reservation is the reservation model
 type Reservation struct {
-	Id        int
+	ID        int
 	FirstName string
 	LastName  string
 	Email     string
 	Phone     string
 	StartDate time.Time
 	EndDate   time.Time
-	RoomId    int
+	RoomID    int
 	CreatedAt time.Time
 	UpdatedAt time.Time
 	Room      Room
@@ -47,12 +47,12 @@ type Reservation struct {
 
 // Restrictions is the model for a room restriction
 type RoomRestriction struct {
-	Id            int
+	ID            int
 	StartDate     time.Time
 	EndDate       time.Time
-	RoomId        int
-	ReservationId int
-	RestrictionId int
+	RoomID        int
+	ReservationID int
+	RestrictionID int
 	CreatedAt     time.Time
 	UpdatedAt     time.Time
 	Room          Room
